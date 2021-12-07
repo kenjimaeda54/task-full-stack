@@ -2,7 +2,7 @@ import Express from "express";
 require("dotenv").config();
 import "express-async-errors";
 import mongoose from "mongoose";
-import taskRouter from "./routes/tasks/taskRouter";
+import taskRouter from "./routes/taskRouter";
 import { handleErros } from "./middleware/handleError";
 
 class App {
