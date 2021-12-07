@@ -6,5 +6,6 @@ const router = Router();
 
 router.post("/", storeValidation, tasksController.store);
 router.put("/:id", storeValidation, tasksController.update);
+router.get("/show", tasksController.show);
 
 export default router;
