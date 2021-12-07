@@ -26,6 +26,8 @@ async function taskValidation(req: Request, res: Response, next: NextFunction) {
       _id: { $ne: req.params.id },
       when: {
         //operador de igualdade
+        //precisei transformar em date,porque do request.body
+        //vem como string
         $eq: new Date(when),
       },
       macaddress: {

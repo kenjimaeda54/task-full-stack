@@ -7,7 +7,7 @@ export default function allTaskValidation(
 ) {
   if (!req.body.macaddress) {
     return res.status(400).json({
-      error: "macaddress is required",
+      error: "Field macaddress is required",
     });
   }
   return next();
