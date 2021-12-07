@@ -23,6 +23,7 @@
     "@types/mongoose": "^5.11.97",
     "connect-mongo": "^4.6.0",
     "dotenv": "^10.0.0",
+    "express-async-errors": "^3.1.1",
     "mongoose": "^6.0.15"
   }
 }
