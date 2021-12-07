@@ -21,7 +21,7 @@ class TasksController {
     return res.status(200).json({ id, description, type, title, when, done });
   }
 
-  async show(req: Request, res: Response) {
+  async index(req: Request, res: Response) {
     const tasks = await TasksModel.find({
       //in e importante para garantir que so os que contem esse parametro
       macaddress: { $in: req.body.macaddress },
@@ -30,6 +30,15 @@ class TasksController {
       .select(["id", "created", "type", "title", "when", "done"]);
 
     return res.status(200).json(tasks);
+  }
+
+  async show(req: Request, res: Response) {
+    const tasks = await TasksModel.findById(req.params.id);
+    if (tasks) {
+      const { id, description, type, title, when, done } = tasks;
+      return res.status(200).json({ id, description, type, title, when, done });
+    }
+    return res.status(404).json({ message: "Task not found" });
   }
 }
 export default new TasksController();
