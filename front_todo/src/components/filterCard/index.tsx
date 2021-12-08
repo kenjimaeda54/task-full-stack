@@ -1,14 +1,24 @@
 import React from "react";
+import { Container, ViewText, Text, Filter, Button } from "./styles";
 
-import { Container, ViewText, Text, Filter } from "./styles";
+interface IFilterCardProps extends React.HtmlHTMLAttributes<HTMLButtonElement> {
+  title: string;
+  active: boolean;
+}
 
-export function FilterCard(): JSX.Element {
+export function FilterCard({
+  title,
+  active,
+  ...rest
+}: IFilterCardProps): JSX.Element {
   return (
-    <Container>
-      <Filter />
-      <ViewText>
-        <Text>ToDo-Organizando sua vida</Text>
-      </ViewText>
-    </Container>
+    <Button {...rest}>
+      <Container isActive={active}>
+        <Filter />
+        <ViewText>
+          <Text>{title}</Text>
+        </ViewText>
+      </Container>
+    </Button>
   );
 }

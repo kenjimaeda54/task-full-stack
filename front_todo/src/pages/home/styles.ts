@@ -1,0 +1,25 @@
+import styled from "styled-components";
+
+export const Container = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+export const Body = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  padding: 15px 20px;
+  gap: 15px;
+`;
+
+export const ListFilterCard = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 15px;
+`;

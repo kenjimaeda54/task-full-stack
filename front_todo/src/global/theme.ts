@@ -5,6 +5,7 @@ export default {
     orange: "#E96B24",
     orangeLight: "#F38952",
     gray: "#94959D",
+    black: "#000000",
   },
   fonts: {
     Light300: "300",
