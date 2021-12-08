@@ -1,11 +1,12 @@
-import React from "react";
+import { ThemeProvider } from 'styled-components';
+import theme from './global/theme';
+import { Home } from './pages/home';
 
-function App() {
+function App(): JSX.Element {
   return (
-    <div className="App">
-      <h1>Hello World</h1>
-    </div>
+    <ThemeProvider theme={theme}>
+      <Home />
+    </ThemeProvider>
   );
 }
-
 export default App;
