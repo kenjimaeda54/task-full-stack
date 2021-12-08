@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
+import { IDataTask } from "../../utils";
 import {
   ListFilterCard,
   Body,
@@ -12,11 +13,32 @@ import { Header } from "../../components/header";
 import { Footer } from "../../components/footer";
 import { FilterCard } from "../../components/filterCard";
 import { TaskCard } from "../../components/taskCard";
+import api from "../../services/api";
 
 export function Home(): JSX.Element {
-  const [isSelect, setIsSelect] = useState("");
+  const [isSelect, setIsSelect] = useState("all");
+  const [dataTask, setDataTask] = useState<IDataTask[]>([]);
 
   const handleCardFilter = (selectCard: string) => setIsSelect(selectCard);
+
+  async function fetchData() {
+    try {
+      if (isSelect === "all") {
+        const response = await api.get(`/tasks/search/11:11:11:11:11:11`);
+        return setDataTask(response.data);
+      }
+      const response = await api.get(
+        `/tasks/search/${isSelect}/11:11:11:11:11:11`
+      );
+      return setDataTask(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, [dataTask]);
 
   return (
     <Container>
@@ -24,28 +46,28 @@ export function Home(): JSX.Element {
       <Body>
         <ListFilterCard>
           <FilterCard
-            onClick={() => handleCardFilter("todos")}
-            active={isSelect === "todos"}
+            onClick={() => handleCardFilter("all")}
+            active={isSelect === "all"}
             title="todos"
           />
           <FilterCard
-            onClick={() => handleCardFilter("hoje")}
-            active={isSelect === "hoje"}
+            onClick={() => handleCardFilter("today")}
+            active={isSelect === "today"}
             title="hoje"
           />
           <FilterCard
-            onClick={() => handleCardFilter("semana")}
-            active={isSelect === "semana"}
+            onClick={() => handleCardFilter("week")}
+            active={isSelect === "week"}
             title="semana"
           />
           <FilterCard
-            onClick={() => handleCardFilter("mes")}
-            active={isSelect === "mes"}
+            onClick={() => handleCardFilter("month")}
+            active={isSelect === "month"}
             title="mes"
           />
           <FilterCard
-            onClick={() => handleCardFilter("ano")}
-            active={isSelect === "ano"}
+            onClick={() => handleCardFilter("year")}
+            active={isSelect === "year"}
             title="ano"
           />
         </ListFilterCard>
