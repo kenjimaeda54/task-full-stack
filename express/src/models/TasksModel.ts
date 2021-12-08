@@ -1,6 +1,6 @@
 import { model, Schema, SchemaDefinitionProperty } from "mongoose";
 
-interface ITasksModel {
+export interface ITasksModel {
   // Um endereço de controle de acesso ao meio de um dispositivo
   //seja dispositivo mobile,desktop,tablet,etc
   macaddress: string;
