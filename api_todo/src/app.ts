@@ -4,6 +4,7 @@ import "express-async-errors";
 import mongoose from "mongoose";
 import taskRouter from "./routes/taskRouter";
 import handleErros from "./middleware/handleError";
+import cors from "cors";
 
 class App {
   app: any;
@@ -18,6 +19,7 @@ class App {
   middleware() {}
 
   routes() {
+    this.app.use(cors());
     this.app.use(Express.json());
     this.app.use(Express.urlencoded({ extended: true }));
     this.app.use("/tasks", taskRouter);

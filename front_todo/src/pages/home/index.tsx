@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { ListFilterCard, Body, Container } from "./styles";
+import {
+  ListFilterCard,
+  Body,
+  Container,
+  WrapTitle,
+  TitleSection,
+  ListTaskCard,
+  WrapSectionTitle,
+} from "./styles";
 import { Header } from "../../components/header";
 import { Footer } from "../../components/footer";
 import { FilterCard } from "../../components/filterCard";
@@ -41,7 +49,20 @@ export function Home(): JSX.Element {
             title="ano"
           />
         </ListFilterCard>
-        <TaskCard />
+        <WrapTitle>
+          <WrapSectionTitle />
+          <TitleSection>Tarefas</TitleSection>
+          <WrapSectionTitle />
+        </WrapTitle>
+        <ListTaskCard>
+          <TaskCard />
+          <TaskCard />
+          <TaskCard />
+          <TaskCard />
+          <TaskCard />
+          <TaskCard />
+          <TaskCard />
+        </ListTaskCard>
       </Body>
       <Footer />
     </Container>
