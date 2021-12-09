@@ -43,11 +43,15 @@ export const TitleSection = styled.h2`
   font-size: 21px;
   line-height: 29px;
   text-transform: uppercase;
-  margin: 0px 15px;
+  margin: 0px 50px;
+  width: 900px;
+  text-align: center;
+  word-break: normal;
 `;
 
 export const ListTaskCard = styled.div`
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
   width: 100%;
   gap: 50px;

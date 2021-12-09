@@ -1,5 +1,6 @@
-import React from "react";
-import Default from "../../assets/default.png";
+import { useMemo } from "react";
+import { format } from "date-fns";
+import { IDataTask, typeIcons } from "../../utils";
 import {
   Container,
   Header,
@@ -9,16 +10,30 @@ import {
   HourFooter,
 } from "./styles";
 
-export function TaskCard(): JSX.Element {
+interface ITaskCardProps {
+  data: IDataTask;
+}
+
+export function TaskCard({ data }: ITaskCardProps): JSX.Element {
+  const date = useMemo(() => {
+    const dateFormat = new Date(data.when);
+    return format(dateFormat, "dd/MM/yyyy");
+  }, []);
+
+  const hours = useMemo(() => {
+    const dateFormat = new Date(data.when);
+    return format(dateFormat, "HH:mm");
+  }, []);
+
   return (
     <Container>
       <Header>
-        <img src={Default} title="photo card task" />
-        <TextHeader>Titutlo da foto</TextHeader>
+        <img src={typeIcons[data.type]} title="photo card task" />
+        <TextHeader>{data.title}</TextHeader>
       </Header>
       <Footer>
-        <DateFooter>12/10/2021</DateFooter>
-        <HourFooter>10:00</HourFooter>
+        <DateFooter>{date}</DateFooter>
+        <HourFooter>{hours}</HourFooter>
       </Footer>
     </Container>
   );

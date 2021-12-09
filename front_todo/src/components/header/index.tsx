@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ButtonHTMLAttributes } from "react";
 import Logo from "../../assets/logo.png";
 import Bell from "../../assets/bell.png";
 import {
@@ -12,7 +12,11 @@ import {
   Button,
 } from "./styles";
 
-export function Header(): JSX.Element {
+interface IHeaderProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  quantity: number;
+}
+
+export function Header({ quantity, ...rest }: IHeaderProps): JSX.Element {
   return (
     <Container>
       <img src={Logo} width={100} height={35} alt="logo" />
@@ -23,11 +27,11 @@ export function Header(): JSX.Element {
         <Separator />
         <TextAnchor>Sincronizar com o celular</TextAnchor>
         <Separator />
-        <Button>
+        <Button {...rest}>
           <ImageAnchor>
             <img src={Bell} width={25} height={25} alt="bell" />
             <WrapQuantity>
-              <Quantity>3</Quantity>
+              <Quantity>{quantity > 0 ? quantity : 0}</Quantity>
             </WrapQuantity>
           </ImageAnchor>
         </Button>

@@ -1,13 +1,13 @@
 import { ThemeProvider } from "styled-components";
 import GlobalStyle from "./globalStyle";
 import theme from "./global/theme";
-import { Home } from "./pages/home";
+import { RegisterTask } from "./pages/registerTask";
 
 function App(): JSX.Element {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <Home />
+      <RegisterTask />
     </ThemeProvider>
   );
 }

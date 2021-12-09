@@ -18,6 +18,7 @@ import api from "../../services/api";
 export function Home(): JSX.Element {
   const [isSelect, setIsSelect] = useState("all");
   const [dataTask, setDataTask] = useState<IDataTask[]>([]);
+  const [quantityLate, setQuantityLate] = useState(0);
 
   const handleCardFilter = (selectCard: string) => setIsSelect(selectCard);
 
@@ -36,13 +37,21 @@ export function Home(): JSX.Element {
     }
   }
 
+  const handleNotification = () => setIsSelect("late");
+
+  async function verifyLateData() {
+    const response = await api.get(`/tasks/search/late/11:11:11:11:11:11`);
+    return setQuantityLate(response.data.length);
+  }
+
   useEffect(() => {
     fetchData();
+    verifyLateData();
   }, [dataTask]);
 
   return (
     <Container>
-      <Header />
+      <Header onClick={handleNotification} quantity={quantityLate} />
       <Body>
         <ListFilterCard>
           <FilterCard
@@ -73,17 +82,15 @@ export function Home(): JSX.Element {
         </ListFilterCard>
         <WrapTitle>
           <WrapSectionTitle />
-          <TitleSection>Tarefas</TitleSection>
+          <TitleSection>
+            {isSelect === "late" ? "Tarefas atrasadas" : "tarefas"}
+          </TitleSection>
           <WrapSectionTitle />
         </WrapTitle>
         <ListTaskCard>
-          <TaskCard />
-          <TaskCard />
-          <TaskCard />
-          <TaskCard />
-          <TaskCard />
-          <TaskCard />
-          <TaskCard />
+          {dataTask.map((task) => (
+            <TaskCard key={task._id} data={task} />
+          ))}
         </ListTaskCard>
       </Body>
       <Footer />
