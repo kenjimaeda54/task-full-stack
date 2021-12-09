@@ -21,11 +21,11 @@ export function Header({ quantity, ...rest }: IHeaderProps): JSX.Element {
     <Container>
       <img src={Logo} width={100} height={35} alt="logo" />
       <SideRight>
-        <TextAnchor>Inicio</TextAnchor>
+        <TextAnchor to="/">Inicio</TextAnchor>
         <Separator />
-        <TextAnchor>Nova tarefa </TextAnchor>
+        <TextAnchor to="/tasks">Nova tarefa </TextAnchor>
         <Separator />
-        <TextAnchor>Sincronizar com o celular</TextAnchor>
+        <TextAnchor to="">Sincronizar com o celular</TextAnchor>
         <Separator />
         <Button {...rest}>
           <ImageAnchor>

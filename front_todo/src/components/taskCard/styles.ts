@@ -11,6 +11,11 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    opacity: 0.7;
+  }
 `;
 
 export const Header = styled.div`

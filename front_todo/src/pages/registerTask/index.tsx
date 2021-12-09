@@ -26,19 +26,35 @@ import {
 
 export function RegisterTask(): JSX.Element {
   const [iconSelected, setIconSelected] = useState(50);
-  const [dataTask, setDataTask] = useState<IDataTask[]>([]);
   const [quantityLate, setQuantityLate] = useState(0);
+  const [title, setTitle] = useState("");
+  const [macaddress, setMacadress] = useState("11:11:11:11:11:11");
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const [done, setDone] = useState(false);
 
   async function verifyLateData() {
     const response = await api.get(`/tasks/search/late/11:11:11:11:11:11`);
     return setQuantityLate(response.data.length);
   }
 
+  async function handleSaveData() {
+    await api.post("/tasks", {
+      title,
+      description,
+      when: `${date}T${time}:00.000`,
+      done,
+      type: iconSelected,
+      macaddress,
+    });
+  }
+
   const handleIconSelected = (type: number) => setIconSelected(type);
 
   useEffect(() => {
     verifyLateData();
-  }, [dataTask]);
+  }, []);
 
   return (
     <Container>
@@ -59,27 +75,47 @@ export function RegisterTask(): JSX.Element {
           })}
         </ListIcons>
         <LabelText>Titulo</LabelText>
-        <InputText placeholder="Titulo da tarefa" />
+        <InputText
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Titulo da tarefa"
+        />
         <LabelText>Descrição</LabelText>
-        <TextArea placeholder="Descricao da tarefa" />
+        <TextArea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="Descricao da tarefa"
+        />
         <LabelText>Data</LabelText>
         <ImgDateTime>
           <img src={Calendar} alt="Icon Calendar" width={25} height={25} />
         </ImgDateTime>
-        <InputText type="date" />
+        <InputText
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+        />
         <LabelText>Hora</LabelText>
         <ImgDateTime>
           <img src={Clock} alt="Icon time" width={25} height={25} />
         </ImgDateTime>
-        <InputText type="time" />
+        <InputText
+          type="time"
+          value={time}
+          onChange={(e) => setTime(e.target.value)}
+        />
         <Section>
           <FooterRight>
-            <ButtonCheck type="checkbox" />
+            <ButtonCheck
+              checked={done}
+              onChange={() => setDone((old) => !old)}
+              type="checkbox"
+            />
             <TitleFooterRight>Concluido</TitleFooterRight>
           </FooterRight>
           <ButtonDestroy>Excluir</ButtonDestroy>
         </Section>
-        <ButtonSave>Salvar</ButtonSave>
+        <ButtonSave onClick={handleSaveData}>Salvar</ButtonSave>
       </Body>
       <Footer />
     </Container>

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const Container = styled.div`
   display: flex;
@@ -16,11 +17,12 @@ export const SideRight = styled.div`
   align-items: center;
 `;
 
-export const TextAnchor = styled.a`
+export const TextAnchor = styled(Link)`
   font-weight: ${({ theme }) => theme.fonts.Medium};
   color: ${({ theme }) => theme.colors.white};
   font-size: 15px;
   line-height: 20px;
+  text-decoration: none;
   cursor: pointer;
   &:hover {
     color: ${({ theme }) => theme.colors.orange};
