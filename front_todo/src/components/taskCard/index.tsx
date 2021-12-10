@@ -26,7 +26,7 @@ export function TaskCard({ data }: ITaskCardProps): JSX.Element {
   }, []);
 
   return (
-    <Container>
+    <Container done={data.done}>
       <Header>
         <img src={typeIcons[data.type]} title="photo card task" />
         <TextHeader>{data.title}</TextHeader>

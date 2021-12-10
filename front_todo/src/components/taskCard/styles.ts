@@ -1,7 +1,12 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+interface IContainerProps {
+  done: boolean;
+}
+
+export const Container = styled.div<IContainerProps>`
   display: flex;
+  opacity: ${({ done }) => (done ? 0.5 : 1)};
   border-radius: 8px;
   padding: 15px 9px;
   background: ${({ theme }) => theme.colors.white};

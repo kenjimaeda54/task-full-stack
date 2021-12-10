@@ -149,7 +149,17 @@ export function RegisterTask(): JSX.Element {
           </FooterRight>
           <ButtonDestroy>Excluir</ButtonDestroy>
         </Section>
-        <ButtonSave onClick={handleSaveData}>Salvar</ButtonSave>
+        <ButtonSave
+          onClick={handleSaveData}
+          disabled={
+            !title || !description || !date || !time || iconSelected === 50
+          }
+          filedOk={
+            !title || !description || !date || !time || iconSelected === 50
+          }
+        >
+          Salvar
+        </ButtonSave>
       </Body>
       <Footer />
     </Container>

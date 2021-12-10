@@ -4,6 +4,10 @@ interface IIconProps {
   selected: boolean;
 }
 
+interface IButtonSave {
+  filedOk: boolean;
+}
+
 export const Container = styled.div`
   display: flex;
   width: 100%;
@@ -125,21 +129,21 @@ export const ButtonDestroy = styled.button`
   }
 `;
 
-export const ButtonSave = styled.button`
+export const ButtonSave = styled.button<IButtonSave>`
   display: flex;
+  opacity: ${({ filedOk }) => (filedOk ? 0.7 : 1)};
+  cursor: ${({ filedOk }) => (filedOk ? "not-allowed" : "pointer")};
   width: 100%;
   padding: 30px 0px;
   justify-content: center;
   align-items: center;
   border-radius: 35px;
-  cursor: pointer;
   background-color: ${({ theme }) => theme.colors.orange};
   color: ${({ theme }) => theme.colors.white};
   font-weight: ${({ theme }) => theme.fonts.Regular};
   color: ${({ theme }) => theme.colors.white};
   font-size: 19px;
   line-height: 23px;
-  cursor: pointer;
   &:hover {
     opacity: 0.7;
   }
