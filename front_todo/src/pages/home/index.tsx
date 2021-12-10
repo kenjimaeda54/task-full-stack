@@ -8,6 +8,7 @@ import {
   TitleSection,
   ListTaskCard,
   WrapSectionTitle,
+  Anchor,
 } from "./styles";
 import { Header } from "../../components/header";
 import { Footer } from "../../components/footer";
@@ -19,6 +20,7 @@ export function Home(): JSX.Element {
   const [isSelect, setIsSelect] = useState("all");
   const [dataTask, setDataTask] = useState<IDataTask[]>([]);
   const [quantityLate, setQuantityLate] = useState(0);
+  const [mounted, setMounted] = useState(false);
 
   const handleCardFilter = (selectCard: string) => setIsSelect(selectCard);
 
@@ -45,8 +47,11 @@ export function Home(): JSX.Element {
   }
 
   useEffect(() => {
-    fetchData();
+    if (!mounted) {
+      fetchData();
+    }
     verifyLateData();
+    return () => setMounted(true);
   }, [dataTask]);
 
   return (
@@ -89,7 +94,9 @@ export function Home(): JSX.Element {
         </WrapTitle>
         <ListTaskCard>
           {dataTask.map((task) => (
-            <TaskCard key={task._id} data={task} />
+            <Anchor key={task._id} to={`/tasks/${task._id}`}>
+              <TaskCard data={task} />
+            </Anchor>
           ))}
         </ListTaskCard>
       </Body>

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const Container = styled.div`
   display: flex;
@@ -55,4 +56,9 @@ export const ListTaskCard = styled.div`
   flex-wrap: wrap;
   width: 100%;
   gap: 50px;
+`;
+
+export const Anchor = styled(Link)`
+  text-decoration: none;
+  color: ${({ theme }) => theme.colors.black};
 `;

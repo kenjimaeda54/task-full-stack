@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { IDataTask } from "../../utils";
 import { Header } from "../../components/header";
 import { Footer } from "../../components/footer";
 import { typeIcons } from "../../utils";
@@ -23,8 +22,12 @@ import {
   ImgDateTime,
   ButtonSave,
 } from "./styles";
+import { useParams } from "react-router-dom";
+import { format } from "date-fns";
 
 export function RegisterTask(): JSX.Element {
+  //recebo id dinamico da rota
+  const { id } = useParams();
   const [iconSelected, setIconSelected] = useState(50);
   const [quantityLate, setQuantityLate] = useState(0);
   const [title, setTitle] = useState("");
@@ -39,7 +42,34 @@ export function RegisterTask(): JSX.Element {
     return setQuantityLate(response.data.length);
   }
 
+  async function loadTasks() {
+    try {
+      const response = await api.get(`/tasks/${id}`);
+      setTitle(response.data.title);
+      setMacadress(response.data.macaddress);
+      setDescription(response.data.description);
+      //CAMPO DATA e igual ao html input tipo date
+      setDate(format(new Date(response.data.when), "yyyy-MM-dd"));
+      setTime(format(new Date(response.data.when), "HH:mm"));
+      setIconSelected(response.data.type);
+      setDone(response.data.done);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   async function handleSaveData() {
+    if (id) {
+      await api.put(`/tasks/${id}`, {
+        title,
+        description,
+        when: `${date}T${time}:00.000`,
+        done,
+        type: iconSelected,
+        macaddress,
+      });
+      return (window.location.href = "/");
+    }
     await api.post("/tasks", {
       title,
       description,
@@ -48,12 +78,16 @@ export function RegisterTask(): JSX.Element {
       type: iconSelected,
       macaddress,
     });
+    return (window.location.href = "/");
   }
 
   const handleIconSelected = (type: number) => setIconSelected(type);
 
   useEffect(() => {
     verifyLateData();
+    if (id) {
+      loadTasks();
+    }
   }, []);
 
   return (
