@@ -5,10 +5,6 @@ import { TasksModel } from "../models/TasksModel";
 async function taskValidation(req: Request, res: Response, next: NextFunction) {
   const { when, macaddress } = req.body;
   //preciso converter para o formato Date;
-  if (isPast(new Date(when))) {
-    return res.status(400).json({ error: "Task date must be in the future" });
-  }
-
   let haveTask = {};
 
   //cuidado com  await quando for usar o findOne
@@ -35,6 +31,8 @@ async function taskValidation(req: Request, res: Response, next: NextFunction) {
         $in: macaddress,
       },
     });
+  } else if (isPast(new Date(when))) {
+    res.status(400).json({ error: "Task date must be in the future" });
   } else {
     haveTask = await TasksModel.findOne({
       when: {
