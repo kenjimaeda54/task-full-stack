@@ -24,23 +24,19 @@ import {
 } from "./styles";
 import { useParams } from "react-router-dom";
 import { format } from "date-fns";
+import { AxiosResponse } from "axios";
+import { ErrorCallback } from "typescript";
 
 export function RegisterTask(): JSX.Element {
   //recebo id dinamico da rota
   const { id } = useParams();
   const [iconSelected, setIconSelected] = useState(50);
-  const [quantityLate, setQuantityLate] = useState(0);
   const [title, setTitle] = useState("");
   const [macaddress, setMacadress] = useState("11:11:11:11:11:11");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [done, setDone] = useState(false);
-
-  async function verifyLateData() {
-    const response = await api.get(`/tasks/search/late/11:11:11:11:11:11`);
-    return setQuantityLate(response.data.length);
-  }
 
   async function loadTasks() {
     try {
@@ -60,31 +56,55 @@ export function RegisterTask(): JSX.Element {
 
   async function handleSaveData() {
     if (id) {
-      await api.put(`/tasks/${id}`, {
-        title,
-        description,
-        when: `${date}T${time}:00.000`,
-        done,
-        type: iconSelected,
-        macaddress,
-      });
+      await api
+        .put(`/tasks/${id}`, {
+          title,
+          description,
+          when: `${date}T${time}:00.000`,
+          done,
+          type: iconSelected,
+          macaddress,
+        })
+        .then(() => (window.location.href = "/"))
+        //API esta retornando o erro no response.
+        //Por isso e feito desse forma tratativa de erro
+        //Caso ela retornasse no throw o erro seria tratado no catch
+        .catch((e) => {
+          const { data } = e.response;
+          alert(data.error);
+        });
+    } else {
+      await api
+        .post("/tasks", {
+          title,
+          description,
+          when: `${date}T${time}:00.000`,
+          done,
+          type: iconSelected,
+          macaddress,
+        })
+        .then(() => (window.location.href = "/"))
+        //API esta retornando o erro no response.
+        //Por isso e feito desse forma tratativa de erro
+        //Caso ela retornasse no throw o erro seria tratado no catch
+        .catch((e) => {
+          const { data } = e.response;
+          alert(data.error);
+        });
+    }
+  }
+
+  async function handleDelete() {
+    const res = window.confirm("Deseja realmente excluir essa tarefa?");
+    if (res) {
+      await api.delete(`/tasks/${id}`);
       return (window.location.href = "/");
     }
-    await api.post("/tasks", {
-      title,
-      description,
-      when: `${date}T${time}:00.000`,
-      done,
-      type: iconSelected,
-      macaddress,
-    });
-    return (window.location.href = "/");
   }
 
   const handleIconSelected = (type: number) => setIconSelected(type);
 
   useEffect(() => {
-    verifyLateData();
     if (id) {
       loadTasks();
     }
@@ -92,7 +112,7 @@ export function RegisterTask(): JSX.Element {
 
   return (
     <Container>
-      <Header quantity={quantityLate} />
+      <Header />
       <Body>
         <ListIcons>
           {typeIcons.map((item, index) => {
@@ -147,7 +167,7 @@ export function RegisterTask(): JSX.Element {
             />
             <TitleFooterRight>Concluido</TitleFooterRight>
           </FooterRight>
-          <ButtonDestroy>Excluir</ButtonDestroy>
+          {id && <ButtonDestroy onClick={handleDelete}>Excluir</ButtonDestroy>}
         </Section>
         <ButtonSave
           onClick={handleSaveData}

@@ -19,10 +19,12 @@ import api from "../../services/api";
 export function Home(): JSX.Element {
   const [isSelect, setIsSelect] = useState("all");
   const [dataTask, setDataTask] = useState<IDataTask[]>([]);
-  const [quantityLate, setQuantityLate] = useState(0);
   const [mounted, setMounted] = useState(false);
 
-  const handleCardFilter = (selectCard: string) => setIsSelect(selectCard);
+  function handleCardFilter(selectCard: string) {
+    setIsSelect(selectCard);
+    setMounted(false);
+  }
 
   async function fetchData() {
     try {
@@ -39,24 +41,21 @@ export function Home(): JSX.Element {
     }
   }
 
-  const handleNotification = () => setIsSelect("late");
-
-  async function verifyLateData() {
-    const response = await api.get(`/tasks/search/late/11:11:11:11:11:11`);
-    return setQuantityLate(response.data.length);
+  function handleNotification() {
+    setIsSelect("late");
+    setMounted(false);
   }
 
   useEffect(() => {
     if (!mounted) {
       fetchData();
     }
-    verifyLateData();
     return () => setMounted(true);
-  }, [dataTask]);
+  }, [dataTask, mounted]);
 
   return (
     <Container>
-      <Header onClick={handleNotification} quantity={quantityLate} />
+      <Header onClick={handleNotification} />
       <Body>
         <ListFilterCard>
           <FilterCard

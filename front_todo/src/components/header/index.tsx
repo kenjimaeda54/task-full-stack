@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes } from "react";
+import { ButtonHTMLAttributes, useState, useEffect } from "react";
 import Logo from "../../assets/logo.png";
 import Bell from "../../assets/bell.png";
 import {
@@ -11,12 +11,22 @@ import {
   Quantity,
   Button,
 } from "./styles";
+import api from "../../services/api";
 
-interface IHeaderProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  quantity: number;
-}
+type IHeaderProps = ButtonHTMLAttributes<HTMLButtonElement>;
 
-export function Header({ quantity, ...rest }: IHeaderProps): JSX.Element {
+export function Header({ ...rest }: IHeaderProps): JSX.Element {
+  const [quantityLate, setQuantityLate] = useState(0);
+
+  async function verifyLateData() {
+    const response = await api.get(`/tasks/search/late/11:11:11:11:11:11`);
+    return setQuantityLate(response.data.length);
+  }
+
+  useEffect(() => {
+    verifyLateData();
+  });
+
   return (
     <Container>
       <img src={Logo} width={100} height={35} alt="logo" />
@@ -25,13 +35,13 @@ export function Header({ quantity, ...rest }: IHeaderProps): JSX.Element {
         <Separator />
         <TextAnchor to="/tasks">Nova tarefa </TextAnchor>
         <Separator />
-        <TextAnchor to="">Sincronizar com o celular</TextAnchor>
+        <TextAnchor to="/qrCode">Sincronizar com o celular</TextAnchor>
         <Separator />
         <Button {...rest}>
           <ImageAnchor>
             <img src={Bell} width={25} height={25} alt="bell" />
             <WrapQuantity>
-              <Quantity>{quantity > 0 ? quantity : 0}</Quantity>
+              <Quantity>{quantityLate > 0 ? quantityLate : 0}</Quantity>
             </WrapQuantity>
           </ImageAnchor>
         </Button>
